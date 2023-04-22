@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+int main (){
+    int X[10];
+    int n=0 , i=0 , a=0;
+    //for para armazenamento no vetor
+    for(n=0 ; n<10 ; n++){
+
+        scanf("%d", &X[n]);
+    }
+    //for para verificação
+    for(i=0 ; i<10 ; i++){
+        if (X[i] <= 0){
+            X[i] = 1;
+        }
+    }
+    //for para imprimir resultado
+    for(a=0 ; a<10 ; a++){
+        printf("X[%d] = %d\n", a , X[a]);
+    }
+    return 0;
+}
