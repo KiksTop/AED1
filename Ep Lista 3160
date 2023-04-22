@@ -1,0 +1,154 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// definição da estrutura que representa um nó da lista encadeada
+struct lista
+{
+    char nome[20];
+    struct lista *prox;
+};
+
+// typedef para simplificar a declaração de variáveis do tipo Lista
+typedef struct lista Lista;
+
+// função que inicializa a lista
+Lista *inicializa()
+{
+    return NULL;
+}
+
+// função que insere um elemento no início da lista
+Lista *insere(Lista *l, char *nome)
+{
+    // aloca memória para o novo nó
+    Lista *novo = (Lista *)malloc(sizeof(Lista));
+
+    // copia o nome para a estrutura
+    strcpy(novo->nome, nome);
+
+    // faz o novo nó apontar para o início da lista
+    novo->prox = l;
+
+    // retorna o novo início da lista
+    return novo;
+}
+
+// função que imprime os elementos da lista
+void imprime(Lista *l)
+{
+    Lista *p;
+
+    // percorre a lista, imprimindo cada elemento
+    for (p = l; p != NULL; p = p->prox)
+    {
+        if (p->prox == NULL)
+        {
+            printf("%s", p->nome);
+        }
+        else
+        {
+            printf("%s ", p->nome);
+        }
+    }
+
+    printf("\n");
+}
+
+// função que busca um elemento na lista
+Lista *busca(Lista *l, char *nome)
+{
+    Lista *p;
+
+    // percorre a lista, procurando pelo elemento com o nome dado
+    for (p = l; p != NULL; p = p->prox)
+    {
+        if (strcmp(p->nome, nome) == 0)
+        {
+            return p;
+        }
+    }
+
+    // retorna NULL caso não encontre o elemento
+    return NULL;
+}
+
+// função que insere os amigos de l2 na lista l1, depois do amigo indicado
+Lista *insere_amigos(Lista *l1, Lista *l2, char *nome)
+{
+    Lista *p, *novo_inicio = NULL, *amigo_indicado = NULL;
+
+    if (strcmp(nome, "nao") != 0)
+    {
+        amigo_indicado = busca(l1, nome);
+    }
+
+    if (amigo_indicado == NULL)
+    { // se o amigo indicado não está na primeira lista
+        // concatenar as duas listas
+        for (p = l2; p != NULL; p = p->prox)
+        {
+            if (busca(l1, p->nome) == NULL)
+            {
+                novo_inicio = insere(novo_inicio, p->nome);
+            }
+        }
+        for (p = l1; p != NULL; p = p->prox)
+        {
+            novo_inicio = insere(novo_inicio, p->nome);
+        }
+    }
+    else
+    { // se o amigo indicado está na primeira lista
+        Lista *q;
+        for (q = l1; q != NULL; q = q->prox)
+        {
+            novo_inicio = insere(novo_inicio, q->nome);
+            if (q == amigo_indicado)
+            { // encontrou o amigo indicado
+                for (p = l2; p != NULL; p = p->prox)
+                {
+                    if (busca(l1, p->nome) == NULL)
+                    { // adiciona os amigos da segunda lista que não estão na primeira
+                        novo_inicio = insere(novo_inicio, p->nome);
+                    }
+                }
+            }
+        }
+    }
+
+    return novo_inicio;
+}
+int main()
+{
+    char amigos_atual[200], novos_amigos[200], amigo_indicado[20];
+    Lista *l1 = inicializa(); // inicializa a primeira lista de amigos
+    Lista *l2 = inicializa(); // inicializa a segunda lista de amigos
+
+    // lê a primeira lista de amigos
+    fgets(amigos_atual, 200, stdin);
+    char *token = strtok(amigos_atual, " \n");
+    while (token != NULL)
+    {
+        l1 = insere(l1, token); // insere cada amigo na lista l1
+        token = strtok(NULL, " \n");
+    }
+
+    // lê a segunda lista de amigos
+    fgets(novos_amigos, 200, stdin);
+    token = strtok(novos_amigos, " \n");
+    while (token != NULL)
+    {
+        l2 = insere(l2, token); // insere cada amigo na lista l2
+        token = strtok(NULL, " \n");
+    }
+
+    // lê o nome do amigo indicado ou a palavra "nao"
+    fgets(amigo_indicado, 20, stdin);
+    amigo_indicado[strcspn(amigo_indicado, "\n")] = '\0'; // remove o caractere '\n' da string
+
+    // chama a função que insere os amigos na lista e imprime o resultado
+    Lista *l3 = insere_amigos(l1, l2, amigo_indicado);
+    imprime(l3); // imprime a lista resultante
+    return 0;
+}
