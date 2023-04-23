@@ -1,28 +1,13 @@
 #include <stdio.h>
 #include <string.h> 
-
+#include <stdlib.h>
 #define MAX_NOMES 100
-#define MAX_TAMANHO 20
-
-//funcao para leitura de N e K
-void Leitura(int *n, int *k){ 
-    scanf("%i %i", n, k);
-    //verificacao
-    if(1 <= *k && *k<=*n && *n <= 100){
-        return 0;
-    }
-    //recursão
-    else {
-        Leitura(&n, &k); 
-    }
-
-}
+#define MAX_TAMANHO 21
 
 //funcao para ler os nomes
 void Nomes(int n, char nomes[][MAX_TAMANHO]){
     int i;
     for (i = 0; i < n; i++) {
-        printf("%d. ", i+1);
         scanf("%s", nomes[i]);
     }
 }
@@ -55,7 +40,7 @@ void Imprime(char nomes[][MAX_TAMANHO], int k){
     for(i=0 ; i<=k ; i++){
         //imprime o nome sorteado
         if (i == k-1){
-            printf("%s", nomes[i]);
+            printf("%s\n", nomes[i]);
         }
 
 }
@@ -65,7 +50,7 @@ void Imprime(char nomes[][MAX_TAMANHO], int k){
 int main(){
     char nomes[MAX_NOMES][MAX_TAMANHO];
     int n, k;
-    Leitura(&n, &k);  
+    scanf("%d %d", &n, &k);
     Nomes(n, nomes);
     ordenar_nomes(nomes , n);
     Imprime(nomes , k);
