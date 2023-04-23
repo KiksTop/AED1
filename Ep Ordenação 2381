@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <string.h> 
+
+#define MAX_NOMES 100
+#define MAX_TAMANHO 20
+
+//funcao para leitura de N e K
+void Leitura(int *n, int *k){ 
+    scanf("%i %i", n, k);
+    //verificacao
+    if(1 <= *k && *k<=*n && *n <= 100){
+        return 0;
+    }
+    //recursão
+    else {
+        Leitura(&n, &k); 
+    }
+
+}
+
+//funcao para ler os nomes
+void Nomes(int n, char nomes[][MAX_TAMANHO]){
+    int i;
+    for (i = 0; i < n; i++) {
+        printf("%d. ", i+1);
+        scanf("%s", nomes[i]);
+    }
+}
+
+//funcao para ordenar os nomes em ordem alfabetica
+void ordenar_nomes(char nomes[][MAX_TAMANHO], int n) {
+    int i, j;
+    char temp[MAX_TAMANHO];
+
+    //Ordenacao de selecao para ordenar a lista de nomes em ordem alfabetica
+    for (i = 0; i < n-1; i++) {
+        int min_idx = i;
+        for (j = i+1; j < n; j++) {
+            if (strcmp(nomes[j], nomes[min_idx]) < 0) {
+                min_idx = j;
+            }
+        }
+        // Troca o nome na posicao i pelo nome na posicao min_idx (o menor nome encontrado)
+        if (min_idx != i) {
+            strcpy(temp, nomes[i]);
+            strcpy(nomes[i], nomes[min_idx]);
+            strcpy(nomes[min_idx], temp);
+        }
+    }
+}
+
+void Imprime(char nomes[][MAX_TAMANHO], int k){
+    int i;
+    //for para ver a lista
+    for(i=0 ; i<=k ; i++){
+        //imprime o nome sorteado
+        if (i == k-1){
+            printf("%s", nomes[i]);
+        }
+
+}
+}
+
+
+int main(){
+    char nomes[MAX_NOMES][MAX_TAMANHO];
+    int n, k;
+    Leitura(&n, &k);  
+    Nomes(n, nomes);
+    ordenar_nomes(nomes , n);
+    Imprime(nomes , k);
+
+
+    return 0;
+}
