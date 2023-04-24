@@ -1,0 +1,38 @@
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <time.h>
+
+    #define TamVet 10000
+
+    void Insercao(int x, int v[]) {
+        int i, j;
+        for (j = 1; j < x; j++) {
+            int x = v[j];
+            for (i = j - 1; i >= 0 && v[i] > x; i--) {
+                v[i + 1] = v[i];
+            }
+            v[i + 1] = x;
+        }
+    }
+
+    int main() {  
+        int i;
+        int x = TamVet;
+        int v[TamVet];
+
+        srand(time(NULL)); // inicializa o gerador de números aleatórios com o tempo atual
+
+        for (i = 0; i < TamVet; i++) {
+            v[i] = rand() % 100; // gera um número aleatório entre 0 e 99
+        }
+
+        Insercao(x, v);
+
+        // imprime o vetor ordenado
+        for (i = 0; i < TamVet; i++) {
+            printf("%d ", v[i]);
+        }
+        printf("\n");
+
+        return 0;
+    }
