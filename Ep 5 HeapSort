@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define TamVet 10000
+
+void InsereEmHeap(int m, int v[]){
+    int f = m+1;
+    //linha de swap
+    while(f>1 && v[f/2] < v[f]){
+        int t = v[f/2]; v[f/2] = v[f]; v[f] = t;
+        f = f/2 ;
+    }
+}
+
+void Heapfy(int m, int v[]){
+    int t, f=2;
+    while (f <= m){
+        if (f<m && v[f] < v[f+1]) f++;
+        if (v[f/2] >= v[f]) break;
+        //linha de swap
+        t = v [f/2] ; v [f/2] = v[f] ; v[f] = t;
+        f *=2
+    }
+}
+
+void HeapSort(int x, int v[]){
+    int m;
+    for(m=1 ; m <x  ; m++){
+        InsereEmHeap(m, v);
+    }
+    for (m=x; m>1; m--){
+        int t = v[1]; v[1] = v[m]; v[m]=t;
+        Heapfy(m-1,  v);
+    }
+}
+
+
+
+int main() {  
+    int i;
+    int x = TamVet;
+    int v[TamVet];
+
+    srand(time(NULL)); // inicializa o gerador de números aleatórios com o tempo atual
+
+    for (i = 0; i < TamVet; i++) {
+        v[i] = rand() % 100; // gera um número aleatório entre 0 e 99
+    }
+
+    HeapSort(x, v);
+
+        // imprime o vetor ordenado
+    for (i = 0; i < TamVet; i++) {
+        printf("%d ", v[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
