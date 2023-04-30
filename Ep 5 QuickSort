@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define TamVet 10000
+
+
+int Separa(int p, int x, int v[]){
+    int c, j, k ,t;
+    c = v[x]; j=p;
+    for ( k=p ; k<x ; k++){
+        if (v[k] <=c){
+            t=v[j] ; v[j] = v[k] ; v[k]=t;
+            j++;
+        }
+    }
+    v[x] = v[j] ; v[j] = c;
+    return j;
+}
+
+
+void QuickSort(int p, int x, int v[]){
+    int j; 
+    if (p<x){
+        j = Separa(p , x , v);
+        QuickSort(p , j-1, v);
+        QuickSort(j+1 , x , v);
+    }
+}
+
+int main() {  
+    int i;
+    int p=0; // adicionado ponto e vírgula para finalizar a declaração da variável
+    int x = TamVet;
+    int v[TamVet];
+
+    srand(time(NULL)); // inicializa o gerador de números aleatórios com o tempo atual
+
+    for (i = 0; i < TamVet; i++) {
+        v[i] = rand() % 100; // gera um número aleatório entre 0 e 99
+    }
+
+    QuickSort(p , x-1 , v); // Corrigido nome da função e a posição final do vetor
+
+    // imprime o vetor ordenado
+    for (i = 0; i < TamVet; i++) {
+        printf("%d ", v[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
