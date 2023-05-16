@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX 10000
+
+// Função para ler uma string da entrada padrão (stdin)
+void lerString(char* str, int tamanhoMaximo) {
+    fgets(str, tamanhoMaximo, stdin);
+    str[strcspn(str, "\n")] = '\0';
+}
+
+// Função para encontrar a sequência "zelda" em uma string
+int encontraZelda(char *str) {
+    int i, j = 0;
+    //tamanho da string
+    int len = strlen(str);
+    
+    for (i = 0; i < len; i++) {
+        if (str[i] == 'z' || str[i] == 'Z') {
+            if (str[i + 1] == 'e' || str[i + 1] == 'E') {
+                if (str[i + 2] == 'l' || str[i + 2] == 'L') {
+                    if (str[i + 3] == 'd' || str[i + 3] == 'D') {
+                        if(str[i+4] == 'a' || str[i+4] == 'A'){
+                        j++;   
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return j;
+}
+
+int main() {
+    
+    char texto[MAX]; // Texto que será lido
+    
+    // Função para ler a string
+    
+    lerString(texto, MAX);
+    
+    int ocorrencias = encontraZelda(texto);
+    
+    // Resultado
+    if (ocorrencias >= 1) {
+        printf("Link Bolado\n");
+    } else {
+        printf("Link Tranquilo\n");
+    }
+    
+    return 0;
+}
