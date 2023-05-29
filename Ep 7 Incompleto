@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define tam 1000
+inicio
+
+typedef struct NohArv{
+	struct NohArv *dir;
+	struct NohArv *esq;
+    char l;
+} NohArv;
+
+void posfixa(NohArv *arv);
+NohArv* arv(char *infixa, char *prefixa, int Ini, int Fim);
+int regen(char *str, int inicioIn, int fimIn, char l);
+NohArv* novoNoh(char l);
+
+int cont;
+
+void main (){
+
+	int casos, i, qtdnoh;
+	char prefixa[tam], infixa[tam];
+	scanf("%i", &casos);
+	while (casos--)
+	{
+		scanf("%i %s %s%*c", &qtdnoh, prefixa, infixa);
+		cont = 0;
+		NohArv *raiz = arvore(infixa, prefixa, 0, qtdnoh - 1);
+		posfixa(raiz);
+		printf("\n");
+	}
+}
+
+void posfixa(NohArv *noh){
+	if (noh == NULL)
+	return;
+	posfixa(noh->esq);
+	posfixa(noh->dir);
+	printf("%c", noh->l);
+
+}
+
+
+
+int regen(char *str, int inicioIn, int fimIn, char l){
+	int j;
+	for (j = inicioIn; j <= fimIN; ++j){
+	    if (str[j] == l){
+	        return j;
+        }
+	return -1;
+    }
+
+}
+
+NohArv* arv(char *infixa, char *prefixa, int Ini, int Fim) {
+
+	int indiceinfixa;
+	if (Ini > Fim){
+	    return NULL;
+    }
+	NohArv *noh = novoNoh(prefixa[cont++]);
+	if (Ini == Fim){
+	    return noh;
+    }
+	indiceinfixa = regen(infixa, Ini, Fim, noh->l);
+	noh->esq = arv(infixa, prefixa, Ini, indiceinfixa - 1);
+	noh->dir = arv(infixa, prefixa, indiceinfixa + 1, Fim);
+	return noh;
+
+}
+
+NohArv* novoNoh(char l){
+	NohArv *noh = (NohArv *) malloc(sizeof(NohArv));
+	noh->l = l;
+	noh->esq = noh->dir = NULL;
+	return noh;
+}
