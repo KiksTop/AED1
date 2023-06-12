@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct NohArv{
+
+	int num;
+	struct NohArv *esq;
+	struct NohArv *dir;
+} NohArv;
+
+
+
+NohArv* insere(NohArv *, int num);
+void erase(NohArv *);
+void PreOr(NohArv *);
+void EmOr(NohArv *);
+void PosOr(NohArv *);
+
+void main (){
+
+    int i, num, qtdNoh, Casos, caso=0;
+    
+	scanf("%d", &Casos);
+	
+    while (Casos--){
+
+		NohArv *arv = NULL;
+		scanf("%d", &qtdNoh);
+
+		for (i = 0; i < qtdNoh; i++){
+
+			scanf("%d", &num);
+			arv = insere(arv, num);
+		}
+		printf("Case %d:\n", ++caso);
+		printf("Pre.:");
+		PreOr(arv);
+		printf("\n");
+		printf("In..:");
+		EmOr(arv);
+		printf("\n");
+		printf("Post:");
+		PosOr(arv);
+		printf("\n\n");
+		erase(arv);
+	}
+    
+}
+
+NohArv* insere(NohArv *arv, int num)
+{
+
+	if (!arv)
+	{
+
+		arv = (NohArv *) malloc(sizeof(NohArv));
+		arv->num = num;
+		arv->esq = arv->dir = NULL;
+
+	}
+	else if (arv->num > num)
+		arv->esq = insere(arv->esq, num);
+
+	else
+		arv->dir = insere(arv->dir, num);
+
+	return arv;
+
+}
+
+void erase(NohArv *arv){
+
+	if (arv){
+
+		erase(arv->esq);
+		erase(arv->dir);
+		free(arv);
+		arv = NULL;
+
+	}
+
+}
+
+
+
+void PreOr(NohArv *arv){
+
+	if (arv){
+
+		printf(" %d", arv->num);
+		PreOr(arv->esq);
+		PreOr(arv->dir);
+
+	}
+
+}
+void EmOr(NohArv *arv){
+
+	if (arv){
+
+		EmOr(arv->esq);
+		printf(" %d", arv->num);
+		EmOr(arv->dir);
+
+	}
+
+}
+
+void PosOr(NohArv *arv){
+
+	if (arv){
+		PosOr(arv->esq);
+		PosOr(arv->dir);
+		printf(" %d", arv->num);
+	}
+
+}
