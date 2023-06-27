@@ -5,6 +5,7 @@
 #define MAX 1000
 
 
+
 struct regen{   
     struct regen *esq;
     int i;
