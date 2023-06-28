@@ -1,101 +1,102 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#define MAX 1000
 
+#define true 1
+#define false 0
 
+typedef struct noArv{
 
-struct regen{   
-    struct regen *esq;
-    int i;
-    struct regen *dir;
+	unsigned numero;
+	struct noArv *direita;
+	struct noArv *esquerda;
 
-};
-typedef struct regen TipoArv;
+} noArv;
 
-TipoArv * funcp(TipoArv *a, int x){  
-    if(a==NULL){
-        return NULL;
-    }
-    else if(x < a->i){
-        if(a->esq==NULL){
-        return a;
-        }
-    else{
-        return funcp(a->esq, x);
-        }
-    if(a->dir==NULL){
-        return a;
-        }
-    else{
-        return funcp(a->dir, x);
-    }
-    }
-    else if (x==a->i){
-        return a;
-    }
-    
-    
+void bfs(noArv *);
+noArv* push(noArv *, unsigned );
+
+unsigned qtsNos;
+
+void main ()
+{
+
+	unsigned i, num, qtsNum;
+	unsigned qtsCasos, caso;
+
+	scanf("%u", &qtsCasos);
+
+	caso = 0;
+	while (qtsCasos--)
+	{
+
+		scanf("%u", &qtsNum);
+
+		qtsNos = 0;
+		noArv *no = NULL;
+		for (i = 0; i < qtsNum; ++i)
+		{
+
+			scanf("%u", &num);
+			no = push(no, num);
+			++qtsNos;
+
+		}
+
+		printf("Case %u:\n", ++caso);
+		bfs(no);
+		printf("\n\n");
+
+	}
+
 }
 
+noArv* push(noArv *no, unsigned numero)
+{
 
-int main()
-{  
-    TipoArv *raiz, *p, *j, *v[MAX];
-    int casos, val, k, l, noh, contA, contB;
-    
+	if (!no)
+	{
 
-    scanf("%d", &casos);
-        for(k=1; k<=casos; k++){
-	        for(l=0;l<MAX;l++){
-	            v[l] = NULL;
-                raiz = NULL;
-        }
-    scanf("%d", &val);
-        for(l=0; l<val; l++){
-            scanf("%d", &noh);
-            j = (TipoArv *) malloc(sizeof(TipoArv));
-            j->i = noh;
-            j->dir = j->esq = NULL;
+		no = (noArv *) malloc(sizeof(noArv));
+		no->numero = numero;
+		no->esquerda = no->direita = NULL;
 
-            p = funcp(raiz, noh);
-            if(p==NULL){
-                raiz = j;
-            }
-            else if (p->i != noh){
-                if (noh > p->i){
-                     p->dir = j;
-                }
-                else{
-                    p->esq = j;
-                }
-            }
-        }
-        printf("Case %d:", k);
-        j = raiz;
-        contA = 1;
-        contB  = 1;
-        v[0] = j;
-        while(j != NULL){
-            printf("%d", j->i);
-            if(j->dir != NULL){
-                v[contA] = j->dir;
-                contA++;
-            }
-            if(j->esq != NULL){
-                v[contA] = j->esq;
-                contA++;
-            }
+	}
+	else if (no->numero > numero)
+		no->esquerda = push(no->esquerda, numero);
+	else
+		no->direita = push(no->direita, numero);
 
-            if(v[contB]!=NULL){
-                printf(" ");
-                j = v[contB];
-                contB++;
-            }
-        }
+	return no;
 
-        printf("\n\n");
-    }
- return 0;
+}
+
+void bfs(noArv *no)
+{
+
+	noArv *fila;
+	unsigned i, f;
+	_Bool flag = false;
+
+	fila = (noArv *) malloc(qtsNos * sizeof(noArv));
+	fila[0] = *no;
+	i = 0; f = 1;
+
+	while (f > i)
+	{
+
+		*no = fila[i++];
+		if (!flag)
+			printf("%u", no->numero), flag = true;
+		else
+			printf(" %u", no->numero);
+
+		if (no->esquerda)
+			fila[f++] = *no->esquerda;
+		if (no->direita)
+			fila[f++] = *no->direita;
+
+	}
+
+	free(fila);
+
 }
