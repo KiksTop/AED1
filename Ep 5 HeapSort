@@ -20,7 +20,7 @@ void Heapfy(int m, int v[]){
         if (v[f/2] >= v[f]) break;
         //linha de swap
         t = v [f/2] ; v [f/2] = v[f] ; v[f] = t;
-        f *=2
+        f *=2;
     }
 }
 
